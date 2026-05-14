@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitForge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4">
+</head>
+<body data-theme="dark">
+    <button id="backButton" class="floating-back-btn" type="button">← Back</button>
+
+    <nav class="site-nav">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <span class="brand-logo">FF</span>
+                <span class="brand-text">FitForge</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/assessment">Assessment</a>
+
+                {% if session.get('user') %}
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/workout">Workout</a>
+                    <a href="/nutrition">Nutrition</a>
+                    <a href="/progress">Progress</a>
+                    <a href="/chat">Chat</a>
+                    <a href="/reset-plan">Reset</a>
+                {% endif %}
+
+                <button id="themeToggle" class="theme-toggle-btn" type="button">Light Mode</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>FitForge — Smart Gym and Nutrition Assistant</p>
+            <p>Workout Planning · Nutrition Guidance · Progress Tracking · PDF Export</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}?v=2"></script>
+    <script src="{{ url_for('static', filename='js/nav.js') }}?v=1"></script>
+    <script src="{{ url_for('static', filename='js/animations.js') }}?v=1"></script>
+</body>
+</html>

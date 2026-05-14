@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FitForge Healthcare</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --accent-green: #10B981;
+            --accent-blue: #3B82F6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0; padding: 40px;
+        }
+
+        .container {
+         max-height: 90vh;
+         overflow-y: auto;
+         scrollbar-width: thin;
+         scrollbar-color: var(--accent-blue) var(--bg-dark);
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+        .search-box {
+            display: flex; gap: 10px; margin-bottom: 30px;
+        }
+
+        input {
+            flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155;
+            background: #0f172a; color: white; outline: none;
+        }
+
+        button {
+            background: var(--accent-green); color: white; border: none;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;
+        }
+
+        table {
+            width: 100%; border-collapse: collapse; margin-top: 20px;
+            background: #1e293b; border-radius: 8px; overflow: hidden;
+        }
+
+        th { background: #334155; color: var(--text-main); text-align: left; padding: 15px; }
+        td { padding: 15px; border-bottom: 1px solid #334155; color: var(--text-muted); }
+
+        tr:hover { background: rgba(255,255,255,0.02); }
+
+        .btn-action { padding: 6px 12px; font-size: 0.85rem; margin-right: 5px; }
+        .btn-chat { background: var(--accent-blue); }
+        .btn-book { background: #6366f1; }
+
+        .back-link { color: var(--text-muted); text-decoration: none; margin-bottom: 20px; display: inline-block; }
+        .back-link:hover { color: var(--accent-green); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to FitForge Home</a>
+
+        <h1>💊 Medicine Search (Egypt)</h1>
+        <div class="search-box">
+            <input type="text" id="medSearch" placeholder="Search 150+ medicines or ingredients...">
+            <button onclick="searchMeds()">Search Database</button>
+        </div>
+        <div id="results"></div>
+
+        <hr style="border: 0; border-top: 1px solid #334155; margin: 40px 0;">
+
+        <h1>🩺 Virtual Doctors - Masr El Gedida</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Specialty</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in doctors %}
+                <tr>
+                    <td><strong style="color:white">{{ doc.name }}</strong></td>
+                    <td>{{ doc.specialty }}</td>
+                    <td>{{ doc.address }}</td>
+                    <td>
+                        <button class="btn-action" onclick="window.location.href='tel:{{ doc.phone }}'">Call</button>
+                        <button class="btn-action btn-chat" onclick="window.location.href='/live-chat?room={{ doc.name }}'">Chat</button>
+                        <button class="btn-action btn-book" onclick="alert('Booking requested!')">Book</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function searchMeds() {
+            let q = document.getElementById('medSearch').value;
+            fetch('/api/medicine/search?q=' + q)
+                .then(res => res.json())
+                .then(data => {
+                    let html = '<div style="background:#0f172a; padding:15px; border-radius:8px;">';
+                    if(data.length === 0) html += '<p>No results found.</p>';
+                    data.forEach(m => {
+                        html += `<div style="padding:10px 0; border-bottom:1px solid #334155;">
+                                    <span style="color:white; font-weight:bold">${m.name}</span> -
+                                    <span style="color:#10B981">${m.price} EGP</span><br>
+                                    <small>${m.ingredient} | ${m.category}</small>
+                                 </div>`;
+                    });
+                    document.getElementById('results').innerHTML = html + '</div>';
+                });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FitForge | Consulting {{ room }}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-dark: #1e293b;
+            --accent-green: #10B981;
+            --accent-blue: #3B82F6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-wrapper {
+            width: 100%;
+            max-width: 600px;
+            height: 85vh;
+            background: var(--card-dark);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .chat-header {
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doctor-info h2 { margin: 0; font-size: 1.2rem; color: var(--text-main); }
+        .doctor-info span { font-size: 0.85rem; color: var(--accent-green); }
+
+        .close-btn { color: var(--text-muted); text-decoration: none; font-size: 1.5rem; }
+
+        /* Chat Area */
+        #chat-box {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent);
+        }
+
+        /* Message Bubbles */
+        .msg-container { clear: both; max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; line-height: 1.4; }
+
+        .msg-left {
+            align-self: flex-start;
+            background: #334155;
+            color: var(--text-main);
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-right {
+            align-self: flex-end;
+            background: var(--accent-blue);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .system-msg {
+            align-self: center;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex-grow: 1;
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--accent-blue); }
+
+        .send-btn {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+    <div class="chat-header">
+        <div class="doctor-info">
+            <h2>{{ room }}</h2>
+            <span>● Online Consultation</span>
+        </div>
+        <a href="/healthcare" class="close-btn">&times;</a>
+    </div>
+
+    <div id="chat-box"></div>
+
+    <div class="input-area">
+        <input type="text" id="user-msg" placeholder="Type your message here..." autocomplete="off">
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    var socket = io();
+    var currentRoom = "{{ room }}";
+
+    socket.on('connect', function() {
+        socket.emit('join', {room: currentRoom});
+    });
+
+    socket.on('message', function(msg) {
+        let chatBox = document.getElementById('chat-box');
+        let div = document.createElement('div');
+
+        // Logic to style based on sender
+        if (msg.startsWith("System:")) {
+            div.className = 'msg-container system-msg';
+        } else if (msg.startsWith("Patient:")) {
+            div.className = 'msg-container msg-right';
+            msg = msg.replace("Patient: ", ""); // Clean prefix
+        } else {
+            div.className = 'msg-container msg-left';
+        }
+
+        div.innerHTML = msg;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    function sendMessage() {
+        let input = document.getElementById('user-msg');
+        let text = input.value.trim();
+        if (text !== "") {
+            socket.emit('private_message', {room: currentRoom, message: "Patient: " + text});
+            input.value = '';
+        }
+    }
+
+    document.getElementById('user-msg').addEventListener("keypress", function(e) {
+        if (e.key === "Enter") sendMessage();
+    });
+</script>
+
+</body>
+</html>

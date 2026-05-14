@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero home-hero">
+    <div class="overlay"></div>
+
+    <div class="hero-content home-content">
+        <span class="hero-badge">Smart Gym Assistant</span>
+        <h1>FitForge</h1>
+        <p>
+            Build a personalized workout plan, nutrition plan, progress tracker,
+            smart recommendations, and downloadable fitness report in one place.
+        </p>
+
+        <div class="hero-actions">
+            <a href="/assessment" class="btn">Start Assessment</a>
+            <a href="/dashboard" class="btn secondary-btn">Open Dashboard</a>
+        </div>
+        <!-- MEDICAL SERVICES SECTION -->
+<div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center;">
+
+    <!-- Virtual Doctors Button -->
+    <button onclick="window.location.href='/healthcare'" style="background: transparent; color: #60A5FA; border: 1px solid #60A5FA; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; transition: 0.3s;">
+        🩺 View Masr El Gedida Doctors
+    </button>
+
+    <!-- Slide-Down Medicine Search -->
+    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+        <input type="text" id="homeMedSearch" placeholder="Search medicine..."
+               style="width: 60%; padding: 12px; border-radius: 8px; border: none; outline: none; background: #374151; color: white;">
+        <button onclick="triggerHomeSearch()"
+                style="background: #3B82F6; color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+            Search
+        </button>
+    </div>
+
+    <!-- The Hidden Results Container (Slides Down) -->
+    <div id="homeSearchResults" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; background: #1F2937; border-radius: 8px; text-align: left;">
+        <div id="homeSearchResultsInner" style="padding: 15px; color: #D1D5DB;">
+            <!-- JavaScript will inject results here -->
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT FOR SLIDE-DOWN ANIMATION -->
+<script>
+    function triggerHomeSearch() {
+        let q = document.getElementById('homeMedSearch').value.trim();
+        let container = document.getElementById('homeSearchResults');
+        let inner = document.getElementById('homeSearchResultsInner');
+
+        if (!q) {
+            container.style.maxHeight = "0"; // Close if empty
+            return;
+        }
+
+        fetch('/api/medicine/search?q=' + q)
+            .then(res => res.json())
+            .then(data => {
+                if (data.length === 0) {
+                    inner.innerHTML = '<p style="text-align: center; margin: 0;">No medicines found.</p>';
+                } else {
+                    let html = '<ul style="list-style: none; padding: 0; margin: 0;">';
+                    data.forEach(m => {
+                        // Change this line inside your triggerHomeSearch function:
+                     html += `
+                     <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); list-style:none;">
+                     <strong style="color: #60A5FA; font-size: 1.1rem;">${m.name}</strong>
+                     <span style="float: right; color: #10B981; font-weight: bold;">${m.price} EGP</span><br>
+                     <small style="color: #9CA3AF; display:block; margin-top:5px;">Active Ingredient: ${m.ingredient}</small>
+                     </li>`;
+                    });
+                    html += '</ul>';
+                    inner.innerHTML = html;
+                }
+
+                // Trigger the slide-down animation
+                container.style.maxHeight = "350px";
+                container.style.overflowY = "auto"; // Allow scrolling if results are too long
+            });
+    }
+
+    // Allow pressing "Enter" to search
+    document.getElementById('homeMedSearch').addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            triggerHomeSearch();
+        }
+    });
+</script>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="section-container">
+        <div class="section-heading">
+            <h2>Core Features</h2>
+            <p>Everything needed for a strong first release.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Smart Assessment</h3>
+                <p>Collects user data and calculates BMI, BMR, TDEE, calories, macros, and water intake.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Workout Generator</h3>
+                <p>Creates gym or home workout plans based on goal, experience, weekly days, and injury conditions.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Nutrition Plan</h3>
+                <p>Builds a meal plan based on calorie target, macros, goal, and budget level.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Progress Tracking</h3>
+                <p>Stores check-ins locally and shows progress summary with a weight chart.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Chat Assistant</h3>
+                <p>Answers common gym and nutrition questions instantly inside the app.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>PDF Export</h3>
+                <p>Downloads the user profile, recommendations, nutrition plan, and workout plan as a report.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="how-section">
+    <div class="section-container">
+        <div class="section-heading">
+            <h2>How It Works</h2>
+            <p>Simple flow from assessment to full plan.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <span>01</span>
+                <h3>Enter Details</h3>
+                <p>Fill the assessment form with body data, goal, experience, place, injuries, and budget.</p>
+            </div>
+
+            <div class="step-card">
+                <span>02</span>
+                <h3>Generate Analysis</h3>
+                <p>FitForge calculates body metrics and builds personalized recommendations.</p>
+            </div>
+
+            <div class="step-card">
+                <span>03</span>
+                <h3>Track and Improve</h3>
+                <p>Use workout, nutrition, progress tracker, chat assistant, and PDF export to follow the plan.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- FLOATING LIVE CHAT BUTTON -->
+<a href="/live-chat" class="floating-chat-btn">
+    💬 Live Chat
+</a>
+
+<style>
+    .floating-chat-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #10B981; /* Matches your Start Assessment green */
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        font-family: sans-serif;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        z-index: 1000;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .floating-chat-btn:hover {
+        transform: scale(1.08);
+        background-color: #059669;
+        color: white;
+    }
+</style>
+{% endblock %}

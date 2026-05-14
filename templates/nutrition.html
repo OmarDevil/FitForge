@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="nutrition-section">
+    <div class="nutrition-container">
+        <div class="dashboard-header">
+            <h1>{{ user.name }}'s Nutrition Plan</h1>
+            <p>{{ user.goal }} nutrition plan based on your budget and calorie target.</p>
+        </div>
+
+        <div class="nutrition-top-grid">
+            <div class="nutrition-card">
+                <h2>Daily Targets</h2>
+                <p><strong>Calories:</strong> {{ meal_plan.calories }} kcal</p>
+                <p><strong>Protein:</strong> {{ meal_plan.protein }} g</p>
+                <p><strong>Carbs:</strong> {{ meal_plan.carbs }} g</p>
+                <p><strong>Fat:</strong> {{ meal_plan.fat }} g</p>
+                <p><strong>Meals Per Day:</strong> {{ meal_plan.meal_count }}</p>
+            </div>
+
+            <div class="nutrition-card">
+                <h2>Workout Meals</h2>
+                <p><strong>Pre-Workout:</strong> {{ meal_plan.pre_workout }}</p>
+                <p><strong>Post-Workout:</strong> {{ meal_plan.post_workout }}</p>
+            </div>
+        </div>
+
+        <div class="meals-grid">
+            <div class="nutrition-card">
+                <h2>Breakfast</h2>
+                <p>{{ meal_plan.breakfast }}</p>
+            </div>
+
+            <div class="nutrition-card">
+                <h2>Lunch</h2>
+                <p>{{ meal_plan.lunch }}</p>
+            </div>
+
+            <div class="nutrition-card">
+                <h2>Dinner</h2>
+                <p>{{ meal_plan.dinner }}</p>
+            </div>
+
+            <div class="nutrition-card">
+                <h2>Snack 1</h2>
+                <p>{{ meal_plan.snack_1 }}</p>
+            </div>
+
+            <div class="nutrition-card">
+                <h2>Snack 2</h2>
+                <p>{{ meal_plan.snack_2 }}</p>
+            </div>
+        </div>
+
+        <div class="nutrition-card tips-card">
+            <h2>Nutrition Tips</h2>
+            <ul>
+                {% for tip in meal_plan.tips %}
+                <li>{{ tip }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/dashboard" class="btn">Dashboard</a>
+            <a href="/workout" class="btn">Workout Plan</a>
+            <a href="/progress" class="btn">Progress Tracker</a>
+            <a href="/export-pdf" class="btn">Download PDF</a>
+            <a href="/assessment" class="btn">New Assessment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

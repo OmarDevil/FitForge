@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="workout-section">
+    <div class="workout-container">
+        <div class="dashboard-header">
+            <h1>{{ user.name }}'s Workout Plan</h1>
+            <p>{{ user.place }} training plan tailored to your goal and experience.</p>
+        </div>
+
+        <div class="workout-grid">
+            {% for day in workout_plan %}
+            <div class="workout-card">
+                <h2>{{ day.title }}</h2>
+
+                {% if day.exercises %}
+                    {% for exercise in day.exercises %}
+                    <div class="exercise-item">
+                        <h3>{{ exercise.name }}</h3>
+                        <p><strong>Sets:</strong> {{ exercise.sets }}</p>
+                        <p><strong>Reps:</strong> {{ exercise.reps }}</p>
+                        <p><strong>Rest:</strong> {{ exercise.rest }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No exercises available due to injury restrictions.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/dashboard" class="btn">Dashboard</a>
+            <a href="/nutrition" class="btn">Nutrition Plan</a>
+            <a href="/progress" class="btn">Progress Tracker</a>
+            <a href="/export-pdf" class="btn">Download PDF</a>
+            <a href="/assessment" class="btn">New Assessment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

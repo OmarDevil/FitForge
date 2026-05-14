@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+exports/*.pdf
+.env
+.vscode/
+.idea/
+.qodo/
+fitforge/data/*.db
+*.sqlite
+*.sqlite3

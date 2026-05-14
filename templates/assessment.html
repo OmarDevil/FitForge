@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-container">
+        <h1>Assessment Form</h1>
+        <p>Fill in your details to generate your fitness plan.</p>
+
+        <form action="/generate-plan" method="POST" class="assessment-form">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" name="age" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Height (cm)</label>
+                    <input type="number" name="height" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Weight (kg)</label>
+                    <input type="number" name="weight" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Goal</label>
+                <select name="goal" required>
+                    <option value="">Select</option>
+                    <option value="Fat Loss">Fat Loss</option>
+                    <option value="Muscle Gain">Muscle Gain</option>
+                    <option value="Maintain">Maintain</option>
+                    <option value="Improve Fitness">Improve Fitness</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Experience Level</label>
+                <select name="experience" required>
+                    <option value="">Select</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Workout Days / Week</label>
+                    <input type="number" name="days" min="1" max="7" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Workout Place</label>
+                    <select name="place" required>
+                        <option value="">Select</option>
+                        <option value="Gym">Gym</option>
+                        <option value="Home">Home</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Food Budget</label>
+                <select name="budget" required>
+                    <option value="">Select</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Injuries or Health Issues</label>
+                <textarea name="injuries" rows="4" placeholder="Example: knee pain, shoulder injury, lower back pain"></textarea>
+            </div>
+
+            <button type="submit" class="btn">Generate Plan</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

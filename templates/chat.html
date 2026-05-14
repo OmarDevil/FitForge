@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="chat-section">
+    <div class="chat-container">
+        <div class="dashboard-header">
+            <h1>{{ user.name }}'s Chat Assistant</h1>
+            <p>Ask about workout, nutrition, recovery, and exercise alternatives.</p>
+        </div>
+
+        <div class="chat-card">
+            <div id="chatMessages" class="chat-messages">
+                <div class="bot-message">
+                    Hello. Ask about food, training, recovery, water, sleep, fat loss, muscle gain, or exercise replacement.
+                </div>
+            </div>
+
+            <form id="chatForm" class="chat-form">
+                <input type="text" id="chatInput" placeholder="Type your question..." required>
+                <button type="submit" class="btn">Send</button>
+            </form>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/dashboard" class="btn">Dashboard</a>
+            <a href="/workout" class="btn">Workout Plan</a>
+            <a href="/nutrition" class="btn">Nutrition Plan</a>
+            <a href="/progress" class="btn">Progress Tracker</a>
+            <a href="/export-pdf" class="btn">Download PDF</a>
+        </div>
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>{{ user.name }}'s Dashboard</h1>
+            <p>Your fitness analysis, nutrition targets, and smart recommendations.</p>
+        </div>
+
+        <div class="info-box">
+            <h2>Profile Summary</h2>
+            <div class="summary-grid">
+                <div><strong>Age:</strong> {{ user.age }}</div>
+                <div><strong>Gender:</strong> {{ user.gender }}</div>
+                <div><strong>Height:</strong> {{ user.height }} cm</div>
+                <div><strong>Weight:</strong> {{ user.weight }} kg</div>
+                <div><strong>Goal:</strong> {{ user.goal }}</div>
+                <div><strong>Experience:</strong> {{ user.experience }}</div>
+                <div><strong>Workout Days:</strong> {{ user.days }}</div>
+                <div><strong>Place:</strong> {{ user.place }}</div>
+                <div><strong>Budget:</strong> {{ user.budget }}</div>
+                <div><strong>Injuries:</strong> {{ user.injuries }}</div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="result-card">
+                <h3>BMI</h3>
+                <p class="big-number">{{ results.bmi }}</p>
+                <span>{{ results.bmi_status }}</span>
+            </div>
+
+            <div class="result-card">
+                <h3>BMR</h3>
+                <p class="big-number">{{ results.bmr }}</p>
+                <span>Calories at rest</span>
+            </div>
+
+            <div class="result-card">
+                <h3>TDEE</h3>
+                <p class="big-number">{{ results.tdee }}</p>
+                <span>Daily maintenance calories</span>
+            </div>
+
+            <div class="result-card">
+                <h3>Target Calories</h3>
+                <p class="big-number">{{ results.target_calories }}</p>
+                <span>Recommended daily intake</span>
+            </div>
+
+            <div class="result-card">
+                <h3>Protein</h3>
+                <p class="big-number">{{ results.protein }}g</p>
+                <span>Daily protein target</span>
+            </div>
+
+            <div class="result-card">
+                <h3>Carbs</h3>
+                <p class="big-number">{{ results.carbs }}g</p>
+                <span>Daily carb target</span>
+            </div>
+
+            <div class="result-card">
+                <h3>Fats</h3>
+                <p class="big-number">{{ results.fat }}g</p>
+                <span>Daily fat target</span>
+            </div>
+
+            <div class="result-card">
+                <h3>Water</h3>
+                <p class="big-number">{{ results.water }}L</p>
+                <span>Daily water intake</span>
+            </div>
+        </div>
+
+        {% if recommendations %}
+        <div class="info-box recommendations-box">
+            <h2>Smart Recommendations</h2>
+            <ul class="recommendations-list">
+                {% for item in recommendations %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="dashboard-actions">
+            <a href="/workout" class="btn">View Workout Plan</a>
+            <a href="/nutrition" class="btn">View Nutrition Plan</a>
+            <a href="/progress" class="btn">Progress Tracker</a>
+            <a href="/chat" class="btn">Chat Assistant</a>
+            <a href="/export-pdf" class="btn">Download PDF</a>
+            <a href="/assessment" class="btn">Back to Assessment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
